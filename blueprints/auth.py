@@ -3,7 +3,7 @@ from flask import Blueprint, abort, request, render_template, redirect, url_for
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from common import db
-from models import CurrentUser, Login, User, UserRole
+from models import CurrentUser, Login, Role, User, UserRole
 
 auth = Blueprint('auth', __name__)
 
@@ -23,12 +23,12 @@ def login():
         if(not check_password_hash(login.passwordHash, password)):
             abort(401)
        
-        u:User = db.session.query(User).filter_by(login_id=login.id).first()
-        if u is None:
+        user:User = db.session.query(User).filter_by(login_id=login.id).first()
+        if user is None:
             abort(401)
 
-        user = CurrentUser(u.id)
-        if(login_user(user)):
+        currentUser = CurrentUser(user.id)
+        if(login_user(currentUser)):
             return {'success': True }
             # return redirect(url_for('protected'))
 
@@ -46,17 +46,30 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username:str = request.form['username']
+        password:str = request.form['password']
         passwordHash = generate_password_hash(password)
-        login = Login(id=str(uuid.uuid4()), userName=username, passwordHash=passwordHash)
+        login_id:str = str(uuid.uuid4())
+
+        #create a login
+        login = Login(id=login_id, userName=username, normalizedUserName=username.upper(), passwordHash=passwordHash)
         db.session.add(login)
-        #add default user and roles etc.
-        user = User(id=str(uuid.uuid4()), login_id=login.id, name=login.userName, email=login.userName)
+
+        #add a user to it
+        user_id:str = str(uuid.uuid4())
+        user = User(id=user_id, login_id=login_id, name=login.userName, email=login.userName)
         db.session.add(user)
 
-        userRole = UserRole(id=str(uuid.uuid4()), user_id=user.id, role_id='550e8400-e29b-41d4-a716-446655440000')
+        #get default role
+        adminRole:Role = db.session.query(Role).filter_by(code="ADMIN").first()
+        
+        #assign default role to the user
+        userRole = UserRole(id=str(uuid.uuid4()), user_id=user.id, role_id=adminRole.id)
         db.session.add(userRole)
         db.session.commit()
+
+        currentUser = CurrentUser(user.id)
+        if(login_user(currentUser)):
+            return {'success': True }
     else:
         return render_template('auth/register.html')

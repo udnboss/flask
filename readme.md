@@ -22,7 +22,11 @@ virtualenv venv
 
 4. Once the virtual environment is activated, you can install the necessary dependencies for your Flask app using `pip`:
 ```python
-pip install flask flask-login flask-swagger
+pip install flask flask-login Flask-SQLAlchemy
 ```
 
+5. Save the requirements 
+```
+pip freeze > requirements.txt
+```
 Now you can run your Flask app within the virtual environment, and all the dependencies will be installed in the virtual environment, isolated from your system-wide Python installation.

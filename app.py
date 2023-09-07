@@ -1,10 +1,13 @@
 from flask import Flask, Response, jsonify, render_template
 from flask_login import LoginManager, login_required
+import os
+
+dbPath = os.path.abspath('db/db.sqlite3')
 
 app = Flask(__name__)
 
 app.secret_key = 'SECRET_KEY'
-app.config["SQLALCHEMY_DATABASE_URI"] = r"sqlite:///D:\Dev\flask\db\db.sqlite3"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{dbPath}"
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

@@ -56,12 +56,15 @@ class Login(db.Model, Entity):
     __tablename__ = "login"
     id = db.Column(db.String(100), primary_key=True)
     userName = db.Column(db.String(100), unique=True, nullable=False)
+    normalizedUserName = db.Column(db.String(100), unique=True, nullable=False)
     passwordHash = db.Column(db.String(256), nullable=False)
 
 class User(db.Model, Entity):
     __tablename__ = "user"
     id = db.Column(db.String(100), primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    login_id = db.Column(db.String(100), db.ForeignKey(Login.id), nullable=False)
 
 class Permission(db.Model, Entity):
     __tablename__ = "permission"
@@ -72,6 +75,7 @@ class Permission(db.Model, Entity):
 class Role(db.Model, Entity):
     __tablename__ = "role"
     id = db.Column(db.String(100), primary_key=True)
+    code = db.Column(db.String(100), unique=True, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
 
 class UserRole(db.Model, Entity):
