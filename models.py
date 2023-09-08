@@ -27,18 +27,22 @@ class CurrentUser:
             .select_from(
                 join(
                     join(
-                        join(User, UserRole, User.id == UserRole.user_id),
-                        Role,
-                        UserRole.role_id == Role.id,
+                        join(
+                            join(User, UserRole, User.id == UserRole.user_id),
+                            Role,
+                            UserRole.role_id == Role.id,
+                        ),
+                        RolePermission,
+                        Role.id == RolePermission.role_id,
                     ),
-                    RolePermission,
-                    Role.id == RolePermission.role_id,
+                    Permission,
+                    RolePermission.permission_id == Permission.id,
                 )
             )
-            .where(User.id == self.id) #'0c55e172-67ee-492c-9279-454e6f991132'
+            .where(User.id == self.id)
         )
         
-        permissions = [p.code for p in db.session.execute(stmt).scalars()]
+        permissions = [p[0].code for p in db.session.execute(stmt).fetchall()]
         return permissionCode in permissions
   
 

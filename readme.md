@@ -30,3 +30,17 @@ pip install flask flask-login Flask-SQLAlchemy
 pip freeze > requirements.txt
 ```
 Now you can run your Flask app within the virtual environment, and all the dependencies will be installed in the virtual environment, isolated from your system-wide Python installation.
+
+
+# To Create a React front-end for your flask app
+install vite and create a react app in the `client` subfolder:
+```
+npm init vite@latest client --template react
+```
+
+to start the react app:
+```
+cd client
+npm install
+npm run dev
+```

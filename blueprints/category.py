@@ -3,7 +3,7 @@ from flask_login import login_required, login_user, logout_user
 from common import db, require_permission
 from models import Category
 
-category = Blueprint('category', __name__)
+category = Blueprint(name='category', url_prefix="/api/category", import_name=__name__)
 
 @category.route('/')
 @login_required

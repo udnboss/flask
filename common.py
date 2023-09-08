@@ -26,3 +26,14 @@ def require_permission(permission):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+import time
+def measure(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} finished in {end - start}s")
+        return result
+    return wrapper

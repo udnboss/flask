@@ -2,13 +2,12 @@ import uuid
 from flask import Blueprint, abort, request, render_template, redirect, url_for
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
-from common import db
+from common import db, measure
 from models import CurrentUser, Login, Role, User, UserRole
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint(name='auth', url_prefix="/api/auth", import_name=__name__)
+  
 
-# users = [CurrentUser(id) for id in range(1, 21)]
-    
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -37,7 +36,6 @@ def login():
         return render_template('auth/login.html')
 
 @auth.route('/logout')
-@login_required
 def logout():
     logout_user()
     # return redirect(url_for('index'))
