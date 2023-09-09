@@ -1,5 +1,5 @@
 import { CLogin } from "../../classes/login";
-import { CurrentUser } from "../../contexts/auth";
+import { CurrentUser } from "../../contexts/AuthContext";
 
 export default class AuthApi {
     constructor() {

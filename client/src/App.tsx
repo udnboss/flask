@@ -1,6 +1,6 @@
-import LoginPage from './pages/auth/login';
-import LogoutPage from './pages/auth/logout';
-import RegisterPage from './pages/auth/register';
+import LoginPage from './pages/auth/LoginPage';
+import LogoutPage from './pages/auth/LogoutPage';
+import RegisterPage from './pages/auth/RegisterPage';
 import HomePage from './pages/home';
 import LayoutPage from './pages/layout';
 import './styles/App.css'

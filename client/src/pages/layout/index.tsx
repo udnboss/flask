@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { AuthProvider } from "../../contexts/auth";
+import { AuthProvider } from "../../contexts/AuthProvider";
 
 export default function LayoutPage() {    
     return (
